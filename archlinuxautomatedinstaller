@@ -1,0 +1,212 @@
+#!/bin/bash
+
+# Made by Cy#0730
+# Licensed under GPL-3.0
+
+# Staring preperations
+clear
+
+# Selecting the Keyboard Layout
+keyboard_layout_selection () {
+    PS3='Please choose your Keyboard Layout: '
+    layouts=("us" "uk" "trq")
+    select fav in "${layouts[@]}"; do
+        echo $fav
+        #echo "KEYMAP=$fav" > /mnt/etc/vconsole.conf
+}
+
+# Selecting the locale
+locale_selection () {
+    PS3='Please choose your Locale: '
+    layouts=("en_US" "en_GB")
+    select fav in "${layouts[@]}"; do
+        echo $fav
+        #echo "$fav.UTF-8 UTF-8"  > /mnt/etc/locale.gen
+        #echo "LANG=$fav.UTF-8" > /mnt/etc/locale.conf
+}
+
+# Selecting the Hostname
+hostname_selection () {
+    read -r -p "Please enter the Hostname you'd like for this Instance of Arch Linux: " name
+    if [ -z "$name" ]; then
+        print "Error! Did not receive a Hostname! Please enter a Hostname for this instance of Arch linux!"
+        hostname_selection
+    fi
+    echo $name
+    #echo "$name" > /mnt/etc/hostname
+}
+
+# Selecting the main (root) password
+main_password_selection () {
+    read -r -s -p "Please enter the Root Password you'd like for this Instance of Arch Linux: " pass
+    if [ -z "$pass" ]; then
+        print "Error! Did not receive a Root Password! Please enter a Root Password for this instance of Arch linux!"
+        main_password_selection
+    fi
+
+    read -r -s -p "Please re-enter the Root Password: " pass2
+    if [ -z "$pass2" ]; then
+        print "Error! Did not receive a Root Password! Please enter a Root Password for this instance of Arch linux!"
+        main_password_selection
+    fi
+
+    [ "$pass" = "$pass2" ] && echo $pass
+    echo "The given passwords do not match! Please try again"
+    main_password_selection
+    done
+}
+
+# Selecting the disk to install Arch Linux to
+disk_selection () {
+    PS3="Please select what disk you'd like Arch Linux install to: "
+    select DISK in $(lsblk -dpnoNAME|grep -P "/dev/sd|nvme|vd");
+        echo $DISK
+
+}
+
+# Selecting the Desktop Environment
+dekstop_environment_selection () {
+    PS3="Please select the Desktop Environment you'd like to use: "
+    des=("kde" "gnome")
+    select fav in "${des[@]}"; do
+        echo $fav
+        #echo "KEYMAP=$fav" > /mnt/etc/vconsole.conf
+}
+
+# Selecting a Username to create a User
+username_selection () {
+    read -r -s -p "Please enter the Username you'd like: " user
+    if [ -z "$user" ]; then
+        print "Error! Did not receive a Username! Please enter a Username to create a user!"
+        username_selection
+    fi
+
+    echo $user
+
+    done
+}
+
+# Selecting a password for the User
+user_password_selection () {
+    read -r -s -p "Please enter the Password you'd like for your User: " pass
+    if [ -z "$pass" ]; then
+        print "Error! Did not receive a Password! Please enter the Passwrod you'd like for your User!"
+        user_password_selection
+    fi
+
+    read -r -s -p "Please re-enter the Password: " pass2
+    if [ -z "$pass2" ]; then
+        print "Error! Did not receive a Password! Please enter the Passwrod you'd like for your User!"
+        user_password_selection
+    fi
+
+    [ "$pass" = "$pass2" ] && echo $pass
+    echo "The given passwords do not match! Please try again"
+    user_password_selection
+    done
+}
+
+# Main Function
+main () {
+    # Welcomes the User
+    echo "Welcome to Arch Linux Automated Installer! This is a Bash Script that automates the installation of Arch Linux. First, we'll go through some options, then we'll install Arch Linux for you. Thank you for choosing Arch Linux Automated Installer!"
+    echo "Please make sure you have internet connection before continuing. Either use an Ethernet connection or connect to a wireless connection using iwctl."
+
+    echo "Begining Installation..."
+
+    # Disk Selection
+    local diskToInstallTo=$(disk_selection)
+    echo "Installing Arch Linux to the following Disk: " $diskToInstallTo
+
+    # Keymap Selection
+    local keyMap=$(keyboard_layout_selection)
+    echo "Selected the following Keymap: " $keyMap
+
+    # Locale Selection
+    local localeSelected=$(locale_selection)
+    echo "Selected the following Locale: " $localeSelected
+
+    # Hostname Selection
+    local hostname=$(hostname_selection)
+    echo "Selected the following Hostname: " $hostname
+
+    # Root Password Selection
+    local rootpass=$(main_password_selection)
+
+    # Desktop Environment Selection
+    local desktopenvironment=$(desktop_environment_selection)
+    echo "Selected the following Desktop Environment: " $desktopenvironment
+
+    # Username Selection
+    local username=$(username_selection)
+    echo "Selected the following Username: " $username
+
+    # User Password Selection
+    local userpass=$(user_password_selection)
+
+    # Confirming Installation with the User
+    read -r -p "Would you like to continue with the Installation? " response
+    response=${response,,}
+    if [[ "$response" =~ ^(yes|y)$ ]]; then
+        # Continue
+    else
+        print "Cancelling Installation..."
+        exit
+    fi
+
+    # Confirming the User wants to wipe the selected Disk
+    read -r -p "Do you understand that Disk $diskToInstallTo will be wiped and that the owner of the Script is not responsible for possible data loss? " response2
+    response2=${response2,,}
+    if [[ "$response2" =~ ^(yes|y)$ ]]; then
+        # Continue
+    else
+        print "Cancelling Installation..."
+        exit
+    fi
+
+    # Notifying the User that they don't have to intervine anymore
+    echo "Thank you! You may now sit back and relax or go do something else while we install Arch Linux for you."
+
+    # Deleting existing partitions 
+    echo "Deleting existing partitions..."
+
+    umount -A --recursive /mnt
+
+    wipefs -af "$diskToInstallTo" &>/dev/null
+    sgdisk -Zo "$diskToInstallTo" &>/dev/null
+
+    # Creating new partitions
+    echo "Creating new partitions..."
+
+    parted -s "$diskToInstallTo" \
+        mklabel gpt \
+        unit mib \
+        mkpart primary 1 350 \
+        mkpart primary 350 8543 \
+        mkpart primary 8543 -1 \
+        name 1 boot \
+        name 2 swap \
+        name 3 home \
+
+    partprobe "$diskToInstallTo"
+
+    # Formatting the partitions
+    echo "Formatting partitions..."
+
+    mkfs.ext4 /dev/${diskToInstallTo}3
+    mkfs.fat -F 32 /dev/${diskToInstallTo}1
+    mkswap /dev/${diskToInstallTo}2
+
+    # Mounting the partitions
+    echo "Mounting the partitions..."
+
+    mkdir -p /mnt/boot/efi
+
+    mount /dev/${diskToInstallTo}3 /mnt
+    mount /dev/${diskToInstallTo}1 /mnt/boot/efi
+    swapon /dev/${diskToInstallTo}2
+
+    # Installing the Base System
+
+
+}
