@@ -75,8 +75,6 @@ username_selection () {
     fi
 
     echo $user
-
-    done
 }
 
 # Selecting the user password (Thanks easy-arch!)
