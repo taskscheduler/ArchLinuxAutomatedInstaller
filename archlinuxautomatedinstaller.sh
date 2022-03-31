@@ -202,23 +202,23 @@ main () {
     # Formatting the partitions
     echo "Formatting partitions..."
 
-    mkfs.ext4 /dev/${diskToInstallTo}3
-    mkfs.fat -F 32 /dev/${diskToInstallTo}1
-    mkswap /dev/${diskToInstallTo}2
+    mkfs.ext4 ${diskToInstallTo}3
+    mkfs.fat -F 32 ${diskToInstallTo}1
+    mkswap ${diskToInstallTo}2
 
     # Mounting the partitions
     echo "Mounting the partitions..."
 
     mkdir -p /mnt/boot/efi
 
-    mount /dev/${diskToInstallTo}3 /mnt
-    mount /dev/${diskToInstallTo}1 /mnt/boot/efi
-    swapon /dev/${diskToInstallTo}2
+    mount ${diskToInstallTo}3 /mnt
+    mount ${diskToInstallTo}1 /mnt/boot/efi
+    swapon ${diskToInstallTo}2
 
     # Installing the Base System
     echo "Installing the Base System..."
 
-    pacstrap /mnt --needed base linux linux-firmware sof-firmware base-devel grub efibootmgr nano networkmanager >/dev/null
+    pacstrap /mnt base linux linux-firmware sof-firmware base-devel grub efibootmgr nano networkmanager
 
     # Generating the fstab
     echo "Generating the File System Tab..."
@@ -273,7 +273,7 @@ main () {
 
     # Setting up Grub
     echo "Setting up Grub..."
-    grub-install /dev/${diskToInstallTo}
+    grub-install ${diskToInstallTo}
     grub-mkconfig -o /boot/grub/grub.cfg
 
     # Notifying the User that the Base Installation is complete
