@@ -56,12 +56,6 @@ main_password_selection () {
     done
 }
 
-# Selecting the disk to install Arch Linux to
-disk_selection () {
-    # Currently Not used
-
-}
-
 # Selecting the Desktop Environment
 dekstop_environment_selection () {
     PS3="Please select the Desktop Environment you'd like to use: "
