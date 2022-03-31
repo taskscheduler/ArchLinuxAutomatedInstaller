@@ -218,7 +218,7 @@ main () {
     # Installing the Base System
     echo "Installing the Base System..."
 
-    pacstrap /mnt base linux linux-firmware sof-firmware base-devel grub efibootmgr nano networkmanager
+    pacstrap /mnt --needed base linux linux-firmware sof-firmware base-devel grub efibootmgr nano networkmanager >/dev/null
 
     # Generating the fstab
     echo "Generating the File System Tab..."
