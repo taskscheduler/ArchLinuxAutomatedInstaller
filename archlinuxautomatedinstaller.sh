@@ -283,13 +283,13 @@ main () {
     su ${username}
 
     # Checking what Desktop Environment they selected and Installing it
-    if [ $desktopenvironment = "kde" ] then
+    if [ $desktopenvironment = "kde" ]; then
         sudo pacman -S plasma sddm konsole kate dolphin firefox
         sudo systemctl enable sddm
     fi
 
-    if [ $desktopenvironment = "gnome" ] then
-        
+    if [ $desktopenvironment = "gnome" ]; then
+        echo "Work in progress"
     fi
 
 }
