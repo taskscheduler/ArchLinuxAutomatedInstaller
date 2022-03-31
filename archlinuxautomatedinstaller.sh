@@ -164,9 +164,9 @@ main () {
     read -r -p "Would you like to continue with the Installation? " response
     response=${response,,}
     if [[ "$response" =~ ^(yes|y)$ ]]; then
-        # Continue
+        echo "Continuing..."
     else
-        print "Cancelling Installation..."
+        echo "Cancelling Installation..."
         exit
     fi
 
@@ -174,9 +174,9 @@ main () {
     read -r -p "Do you understand that Disk $diskToInstallTo will be wiped and that the owner of the Script is not responsible for possible data loss? " response2
     response2=${response2,,}
     if [[ "$response2" =~ ^(yes|y)$ ]]; then
-        # Continue
+        echo "Continuing..."
     else
-        print "Cancelling Installation..."
+        echo "Cancelling Installation..."
         exit
     fi
 
