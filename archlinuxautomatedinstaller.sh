@@ -13,6 +13,7 @@ keyboard_layout_selection () {
     select fav in "${layouts[@]}"; do
         echo $fav
         #echo "KEYMAP=$fav" > /mnt/etc/vconsole.conf
+    done
 }
 
 # Selecting the locale
@@ -23,6 +24,7 @@ locale_selection () {
         echo $fav
         #echo "$fav.UTF-8 UTF-8"  > /mnt/etc/locale.gen
         #echo "LANG=$fav.UTF-8" > /mnt/etc/locale.conf
+    done
 }
 
 # Selecting the Hostname
@@ -59,6 +61,7 @@ disk_selection () {
     PS3="Please select what disk you'd like Arch Linux install to: "
     select DISK in $(lsblk -dpnoNAME|grep -P "/dev/sd|nvme|vd");
         echo $DISK
+    done
 
 }
 
@@ -69,6 +72,7 @@ dekstop_environment_selection () {
     select fav in "${des[@]}"; do
         echo $fav
         #echo "KEYMAP=$fav" > /mnt/etc/vconsole.conf
+    done
 }
 
 # Selecting a Username to create a User
