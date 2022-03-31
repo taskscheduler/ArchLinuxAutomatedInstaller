@@ -221,7 +221,7 @@ main () {
     pacstrap /mnt base linux linux-firmware sof-firmware base-devel grub efibootmgr nano networkmanager
 
     # Generating the fstab
-    echo "Installing the File System Tab..."
+    echo "Generating the File System Tab..."
     genfstab /mnt > /mnt/etc/fstab
 
     # Changing the Root
