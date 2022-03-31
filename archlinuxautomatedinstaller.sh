@@ -145,7 +145,7 @@ main () {
     local rootpass=$(main_password_selection)
 
     # Desktop Environment Selection
-    local desktopenvironment=$(desktop_environment_selection)
+    local desktopenvironment=$(dekstop_environment_selection)
     echo "Selected the following Desktop Environment: " $desktopenvironment
 
     # Timezone Selection
