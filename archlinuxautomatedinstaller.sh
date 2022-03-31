@@ -124,7 +124,7 @@ main () {
     #local diskToInstallTo=$(disk_selection)
     PS3="Please select what disk you'd like Arch Linux install to: "
     select EN in $(lsblk -dpnoNAME|grep -P "/dev/sd|nvme|vd");
-        diskToInstallTo=$EN
+        diskToInstallTo = $EN
     done
     echo "Installing Arch Linux to the following Disk: " $diskToInstallTo
 
