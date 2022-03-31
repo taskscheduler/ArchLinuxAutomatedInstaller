@@ -36,23 +36,21 @@ hostname_selection () {
     #echo "$name" > /mnt/etc/hostname
 }
 
-# Selecting the main (root) password
+# Selecting the main/root password (Thanks easy-arch!)
 main_password_selection () {
-    read -r -s -p "Please enter the Root Password you'd like for this Instance of Arch Linux: " pass
-    if [ -z "$pass" ]; then
-        print "Error! Did not receive a Root Password! Please enter a Root Password for this instance of Arch linux!"
-        main_password_selection
-    fi
-
-    read -r -s -p "Please re-enter the Root Password: " pass2
-    if [ -z "$pass2" ]; then
-        print "Error! Did not receive a Root Password! Please enter a Root Password for this instance of Arch linux!"
-        main_password_selection
-    fi
-
-    [ "$pass" = "$pass2" ] && echo $pass
-    echo "The given passwords do not match! Please try again"
-    main_password_selection
+    while true; do
+        read -r -p "Please enter the Root Pasword you'd like for this instance of Arch Linux: " mainpass
+	    while [ -z "$mainpass" ]; do
+            echo
+            echo "You need to enter a Root password."
+            read -r -p "Please enter a Root Password: " mainpass
+            [ -n "$mainpass" ] && break
+	    done
+        echo
+        read -r -p "Please enter the Root Password again: " mainpass2
+        echo
+        [ "$mainpass" = "$mainpass2" ] && echo $mainpass && break
+        echo "The passwords do not match! Please try again!"
     done
 }
 
@@ -75,7 +73,7 @@ dekstop_environment_selection () {
 
 # Selecting a Username to create a User
 username_selection () {
-    read -r -s -p "Please enter the Username you'd like: " user
+    read -r -p "Please enter the Username you'd like: " user
     if [ -z "$user" ]; then
         print "Error! Did not receive a Username! Please enter a Username to create a user!"
         username_selection
@@ -86,23 +84,38 @@ username_selection () {
     done
 }
 
-# Selecting a password for the User
+# Selecting the user password (Thanks easy-arch!)
 user_password_selection () {
-    read -r -s -p "Please enter the Password you'd like for your User: " pass
-    if [ -z "$pass" ]; then
-        print "Error! Did not receive a Password! Please enter the Passwrod you'd like for your User!"
-        user_password_selection
-    fi
+    while true; do
+        read -r -p "Please enter the User Pasword you'd like for your User: " userpass
+	    while [ -z "$userpass" ]; do
+            echo
+            echo "You need to enter a User password."
+            read -r -p "Please enter a User Password: " userpass
+            [ -n "$userpass" ] && break
+	    done
+        echo
+        read -r -p "Please enter the User Password again: " userpass2
+        echo
+        [ "$userpass" = "$userpass2" ] && echo $userpass && break
+        echo "The passwords do not match! Please try again!"
+    done
+}
 
-    read -r -s -p "Please re-enter the Password: " pass2
-    if [ -z "$pass2" ]; then
-        print "Error! Did not receive a Password! Please enter the Passwrod you'd like for your User!"
-        user_password_selection
-    fi
-
-    [ "$pass" = "$pass2" ] && echo $pass
-    echo "The given passwords do not match! Please try again"
-    user_password_selection
+# Selecting a Timezone
+timezone_selection () {
+    PS3="Please select a Timezone: "
+    timezones=("GB" "GMT" "Custom")
+    select fav in "${timezones[@]}"; do
+        [ "$fav" != "Custom" ] && echo $fav && break
+        read -r -p "Please enter a Custom Timezone " customtimezone
+        while [ -z "$customtimezone" ]; do
+            echo
+            echo "You need to enter a Custom Timezone"
+            read -r -p "Please enter a Custom Timezone: " customtimezone
+            [ -n "$customtimezone" ] && break
+        done
+        echo $customtimezone && break
     done
 }
 
@@ -136,6 +149,10 @@ main () {
     # Desktop Environment Selection
     local desktopenvironment=$(desktop_environment_selection)
     echo "Selected the following Desktop Environment: " $desktopenvironment
+
+    # Timezone Selection
+    local timezone=$(timezone_selection)
+    echo "Selected the following Timezone: " $timezone
 
     # Username Selection
     local username=$(username_selection)
@@ -186,7 +203,7 @@ main () {
         mkpart primary 8543 -1 \
         name 1 boot \
         name 2 swap \
-        name 3 home \
+        name 3 home
 
     partprobe "$diskToInstallTo"
 
@@ -207,6 +224,83 @@ main () {
     swapon /dev/${diskToInstallTo}2
 
     # Installing the Base System
+    echo "Installing the Base System..."
 
+    pacstrap /mnt base linux linux-firmware sof-firmware base-devel grub efibootmgr nano networkmanager
+
+    # Generating the fstab
+    echo "Installing the File System Tab..."
+    genfstab /mnt > /mnt/etc/fstab
+
+    # Changing the Root
+    echo "Moving into Root 'mnt'..."
+    arch-chroot /mnt
+
+    # Setting the Timezone to the Timezone that the User selected
+    echo "Setting Timezone..."
+    ln -sf /usr/share/zoneinfo/${timezone} /etc/localtime
+
+    # Syncing the System Clock
+    hwclock --systohc
+
+    # Setting the Locale to the Locale that the User selected
+    echo "$localeSelected.UTF-8 UTF-8"  > /mnt/etc/locale.gen
+    echo "LANG=$localeSelected.UTF-8" > /mnt/etc/locale.conf
+
+    # Generating the Locale
+    echo "Generating the Locale..."
+    locale-gen
+
+    # Setting the Keymap to the Keymap that the User selected
+    echo "Setting the Keymap..."
+    echo "KEYMAP=$keyMap" > /mnt/etc/vconsole.conf
+
+    # Setting the Hostname to the Hostname that the User selected
+    echo "Setting the Hostname..."
+    echo "$hostname" > /mnt/etc/hostname
+
+    # Setting the Root Password to the Root Password that the User selected
+    echo "Setting the Root Password..."
+    echo "root:$rootpass" | chpasswd
+
+    # Creating a User with the Username that the User selected
+    echo "Creating the User..."
+    useradd -m -G wheel -s /bin/bash ${username}
+
+    # Setting the password of the User
+    echo "Setting the User Password..."
+    echo "$username:$userpass" | chpasswd
+
+    # Adding the User Group 'wheel' to the sudoers list
+    echo "Adding the User Group 'wheel' to the sudoers list..."
+    sed -i 's/# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/' /mnt/etc/sudoers
+
+    # Enabling Services/Daemons
+    echo "Enabling Services/Daemons..."
+    systemctl enable NetworkManager
+
+    # Setting up Grub
+    echo "Setting up Grub..."
+    grub-install /dev/${diskToInstallTo}
+    grub-mkconfig -o /boot/grub/grub.cfg
+
+    # Notifying the User that the Base Installation is complete
+    echo "The Base Installation is complete. Please wait while we install the selected Desktop Environment."
+
+    # Switching into the User Account
+    su ${username}
+
+    # Checking what Desktop Environment they selected and Installing it
+    if [ $desktopenvironment = "kde" ] then
+        sudo pacman -S plasma sddm konsole kate dolphin firefox
+        sudo systemctl enable sddm
+    fi
+
+    if [ $desktopenvironment = "gnome" ] then
+        
+    fi
 
 }
+
+# Calling the Main function
+main
