@@ -11,7 +11,7 @@ keyboard_layout_selection () {
     PS3='Please choose your Keyboard Layout: '
     layouts=("us" "uk" "trq")
     select fav in "${layouts[@]}"; do
-        echo $fav
+        echo $fav && break
         #echo "KEYMAP=$fav" > /mnt/etc/vconsole.conf
     done
 }
@@ -21,7 +21,7 @@ locale_selection () {
     PS3='Please choose your Locale: '
     layouts=("en_US" "en_GB")
     select fav in "${layouts[@]}"; do
-        echo $fav
+        echo $fav && break
         #echo "$fav.UTF-8 UTF-8"  > /mnt/etc/locale.gen
         #echo "LANG=$fav.UTF-8" > /mnt/etc/locale.conf
     done
@@ -61,7 +61,7 @@ dekstop_environment_selection () {
     PS3="Please select the Desktop Environment you'd like to use: "
     des=("kde" "gnome")
     select fav in "${des[@]}"; do
-        echo $fav
+        echo $fav && break
         #echo "KEYMAP=$fav" > /mnt/etc/vconsole.conf
     done
 }
