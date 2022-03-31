@@ -58,10 +58,7 @@ main_password_selection () {
 
 # Selecting the disk to install Arch Linux to
 disk_selection () {
-    PS3="Please select what disk you'd like Arch Linux install to: "
-    select DISK in $(lsblk -dpnoNAME|grep -P "/dev/sd|nvme|vd");
-        echo $DISK
-    done
+    # Currently Not used
 
 }
 
@@ -132,7 +129,11 @@ main () {
     echo "Begining Installation..."
 
     # Disk Selection
-    local diskToInstallTo=$(disk_selection)
+    #local diskToInstallTo=$(disk_selection)
+    PS3="Please select what disk you'd like Arch Linux install to: "
+    select EN in $(lsblk -dpnoNAME|grep -P "/dev/sd|nvme|vd");
+        diskToInstallTo=$EN
+    done
     echo "Installing Arch Linux to the following Disk: " $diskToInstallTo
 
     # Keymap Selection
