@@ -165,9 +165,6 @@ main () {
     response=${response,,}
     if [[ "$response" =~ ^(yes|y)$ ]]; then
         echo "Continuing..."
-    else
-        echo "Cancelling Installation..."
-        exit
     fi
 
     # Confirming the User wants to wipe the selected Disk
@@ -175,9 +172,6 @@ main () {
     response2=${response2,,}
     if [[ "$response2" =~ ^(yes|y)$ ]]; then
         echo "Continuing..."
-    else
-        echo "Cancelling Installation..."
-        exit
     fi
 
     # Notifying the User that they don't have to intervine anymore
