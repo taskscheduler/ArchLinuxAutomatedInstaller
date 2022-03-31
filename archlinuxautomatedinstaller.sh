@@ -292,6 +292,10 @@ main () {
         echo "Work in progress"
     fi
 
+    # Notifying the User that the Installation is Complete
+    echo "Installation Complete! - Thank you for using Arch Linux Automated Installer!"
+    echo "Please eject the Installation Media, then restart your Instance of Arch Linux."
+
 }
 
 # Calling the Main function
