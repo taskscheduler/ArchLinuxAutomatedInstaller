@@ -218,10 +218,11 @@ main () {
     # Mounting the partitions
     echo "Mounting the partitions..."
 
-    mkdir -p /mnt/boot/efi
-
     mount ${diskToInstallTo}3 /mnt
+
+    mkdir -p /mnt/boot/efi
     mount ${diskToInstallTo}1 /mnt/boot/efi
+    
     swapon ${diskToInstallTo}2
 
     # Installing the Base System
