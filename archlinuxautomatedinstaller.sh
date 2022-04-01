@@ -234,73 +234,73 @@ main () {
     echo "Generating the File System Tab..."
     genfstab /mnt > /mnt/etc/fstab
 
-    # Changing the Root
-    echo "Moving into Root 'mnt'..."
-    arch-chroot /mnt
+    # Changing the Root: This does not work
+    #echo "Moving into Root 'mnt'..."
+    #arch-chroot /mnt
 
     # Setting the Timezone to the Timezone that the User selected
     echo "Setting Timezone..."
-    ln -sf /usr/share/zoneinfo/${timezone} /etc/localtime
+    arch-chroot /mnt ln -sf /usr/share/zoneinfo/${timezone} /etc/localtime
 
     # Syncing the System Clock
-    hwclock --systohc
+    arch-chroot /mnt hwclock --systohc
 
     # Setting the Locale to the Locale that the User selected
-    echo "$localeSelected.UTF-8 UTF-8"  > /mnt/etc/locale.gen
-    echo "LANG=$localeSelected.UTF-8" > /mnt/etc/locale.conf
+    arch-chroot /mnt echo "$localeSelected.UTF-8 UTF-8"  > /mnt/etc/locale.gen
+    arch-chroot /mnt echo "LANG=$localeSelected.UTF-8" > /mnt/etc/locale.conf
 
     # Generating the Locale
     echo "Generating the Locale..."
-    locale-gen
+    arch-chroot /mnt locale-gen
 
     # Setting the Keymap to the Keymap that the User selected
     echo "Setting the Keymap..."
-    echo "KEYMAP=$keyMap" > /mnt/etc/vconsole.conf
+    arch-chroot /mnt echo "KEYMAP=$keyMap" > /mnt/etc/vconsole.conf
 
     # Setting the Hostname to the Hostname that the User selected
     echo "Setting the Hostname..."
-    echo "$hostname" > /mnt/etc/hostname
+    arch-chroot /mnt echo "$hostname" > /mnt/etc/hostname
 
     # Setting the Root Password to the Root Password that the User selected
     echo "Setting the Root Password..."
-    echo "root:$rootpass" | chpasswd
+    arch-chroot /mnt echo "root:$rootpass" | chpasswd
 
     # Creating a User with the Username that the User selected
     echo "Creating the User..."
-    useradd -m -G wheel -s /bin/bash ${username}
+    arch-chroot /mnt useradd -m -G wheel -s /bin/bash ${username}
 
     # Setting the password of the User
     echo "Setting the User Password..."
-    echo "$username:$userpass" | chpasswd
+    arch-chroot /mnt echo "$username:$userpass" | chpasswd
 
     # Adding the User Group 'wheel' to the sudoers list
     echo "Adding the User Group 'wheel' to the sudoers list..."
-    sed -i 's/# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/' /mnt/etc/sudoers
+    arch-chroot /mnt sed -i 's/# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/' /mnt/etc/sudoers
 
     # Enabling Services/Daemons
     echo "Enabling Services/Daemons..."
-    systemctl enable NetworkManager
+    arch-chroot /mnt systemctl enable NetworkManager
 
     # Setting up Grub
     echo "Setting up Grub..."
-    grub-install ${diskToInstallTo}
-    grub-mkconfig -o /boot/grub/grub.cfg
+    arch-chroot /mnt grub-install ${diskToInstallTo}
+    arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
 
     # Notifying the User that the Base Installation is complete
-    echo "The Base Installation is complete. Please wait while we install the selected Desktop Environment."
+    #echo "The Base Installation is complete. Please wait while we install the selected Desktop Environment."
 
     # Switching into the User Account
-    su ${username}
+    #su ${username}
 
     # Checking what Desktop Environment they selected and Installing it
-    if [ $desktopenvironment = "kde" ]; then
-        sudo pacman -S plasma sddm konsole kate dolphin firefox
-        sudo systemctl enable sddm
-    fi
+    #if [ $desktopenvironment = "kde" ]; then
+        #sudo pacman -S plasma sddm konsole kate dolphin firefox
+        #sudo systemctl enable sddm
+    #fi
 
-    if [ $desktopenvironment = "gnome" ]; then
-        echo "Work in progress"
-    fi
+    #if [ $desktopenvironment = "gnome" ]; then
+        #echo "Work in progress"
+    #fi
 
     # Notifying the User that the Installation is Complete
     echo "Installation Complete! - Thank you for using Arch Linux Automated Installer!"
