@@ -261,8 +261,6 @@ main () {
     echo "Setting the Hostname..."
     arch-chroot /mnt echo "$hostname" > /mnt/etc/hostname
 
-    exit
-
     # Setting the Root Password to the Root Password that the User selected
     echo "Setting the Root Password..."
     echo "root:$rootpass" | arch-chroot /mnt chpasswd
