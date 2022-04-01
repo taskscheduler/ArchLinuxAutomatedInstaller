@@ -196,7 +196,7 @@ main () {
     # Creating new partitions
     echo "Creating new partitions..."
 
-    parted --script "$diskToInstallTo" \
+    parted -s "$diskToInstallTo" -- \
         mklabel gpt \
         unit mib \
         mkpart primary 1 350 \
@@ -227,9 +227,6 @@ main () {
 
     # Installing the Base System
     echo "Installing the Base System..."
-
-    # Exiting for debugging.
-    exit
 
     pacstrap /mnt base linux linux-firmware sof-firmware base-devel grub efibootmgr nano networkmanager
 
