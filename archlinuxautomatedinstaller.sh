@@ -118,7 +118,9 @@ main () {
     echo "Welcome to Arch Linux Automated Installer! This is a Bash Script that automates the installation of Arch Linux. First, we'll go through some options, then we'll install Arch Linux for you. Thank you for choosing Arch Linux Automated Installer!"
     echo "Please make sure you have internet connection before continuing. Either use an Ethernet connection or connect to a wireless connection using iwctl."
 
-    echo "Begining Installation..."
+    sleep 5s
+
+    echo "Begining Setup..."
 
     # Disk Selection
     #local diskToInstallTo=$(disk_selection)
@@ -175,6 +177,13 @@ main () {
 
     # Notifying the User that they don't have to intervine anymore
     echo "Thank you! You may now sit back and relax or go do something else while we install Arch Linux for you."
+    echo "Begining Installation in 5 seconds..."
+
+    sleep 5s
+
+    echo "Begining Installation!"
+
+    sleep 1s
 
     # Deleting existing partitions 
     echo "Deleting existing partitions..."
