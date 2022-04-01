@@ -222,16 +222,16 @@ main () {
 
     mkdir -p /mnt/boot/efi
     mount ${diskToInstallTo}1 /mnt/boot/efi
-    
+
     swapon ${diskToInstallTo}2
 
     # Installing the Base System
     echo "Installing the Base System..."
 
-    pacstrap /mnt base linux linux-firmware sof-firmware base-devel grub efibootmgr nano networkmanager
+    # Exiting for debugging.
+    exit
 
-    # Sleep for debugging
-    sleep 10s
+    pacstrap /mnt base linux linux-firmware sof-firmware base-devel grub efibootmgr nano networkmanager
 
     # Generating the fstab
     echo "Generating the File System Tab..."
