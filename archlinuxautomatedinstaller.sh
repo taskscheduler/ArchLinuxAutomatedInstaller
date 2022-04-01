@@ -271,7 +271,7 @@ main () {
 
     # Setting the password of the User
     echo "Setting the User Password..."
-    arch-chroot /mnt echo "$username:$userpass" | chpasswd
+    echo "$username:$userpass" | arch-chroot /mnt chpasswd
 
     # Adding the User Group 'wheel' to the sudoers list
     echo "Adding the User Group 'wheel' to the sudoers list..."
