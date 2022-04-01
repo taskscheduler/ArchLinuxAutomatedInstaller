@@ -196,7 +196,7 @@ main () {
     # Creating new partitions
     echo "Creating new partitions..."
 
-    parted --script "$diskToInstallTo" \
+    parted -s "$diskToInstallTo" \
         mklabel gpt \
         unit mib \
         mkpart primary 1 350 \
