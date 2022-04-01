@@ -229,6 +229,9 @@ main () {
 
     pacstrap /mnt base linux linux-firmware sof-firmware base-devel grub efibootmgr nano networkmanager
 
+    # Sleep for debugging
+    sleep 10s
+
     # Generating the fstab
     echo "Generating the File System Tab..."
     genfstab /mnt > /mnt/etc/fstab
