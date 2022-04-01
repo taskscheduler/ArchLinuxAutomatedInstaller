@@ -59,7 +59,7 @@ main_password_selection () {
 # Selecting the Desktop Environment
 dekstop_environment_selection () {
     PS3="Please select the Desktop Environment you'd like to use: "
-    des=("kde" "gnome")
+    des=("kde" "gnome" "none")
     select fav in "${des[@]}"; do
         echo $fav && break
         #echo "KEYMAP=$fav" > /mnt/etc/vconsole.conf
@@ -263,7 +263,7 @@ main () {
 
     # Setting the Root Password to the Root Password that the User selected
     echo "Setting the Root Password..."
-    arch-chroot /mnt echo "root:$rootpass" | chpasswd
+    echo "root:$rootpass" | arch-chroot /mnt chpasswd
 
     # Creating a User with the Username that the User selected
     echo "Creating the User..."
@@ -275,7 +275,7 @@ main () {
 
     # Adding the User Group 'wheel' to the sudoers list
     echo "Adding the User Group 'wheel' to the sudoers list..."
-    arch-chroot /mnt sed -i 's/# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/' /mnt/etc/sudoers
+    sed -i 's/# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/' /mnt/etc/sudoers
 
     # Enabling Services/Daemons
     echo "Enabling Services/Daemons..."
