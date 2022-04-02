@@ -303,6 +303,7 @@ main () {
     if [ $desktopenvironment = "kde" ]; then
         # Notifying the User that the Base Installation is complete
         echo "The Base Installation is complete. Please wait while we install the selected Desktop Environment."
+        sleep 3s
 
         # Installing KDE
         arch-chroot /mnt pacman -S plasma sddm konsole kate dolphin firefox
@@ -321,6 +322,7 @@ main () {
     if [ $desktopenvironment = "gnome" ]; then
         # Notifying the User that the Base Installation is complete
         echo "The Base Installation is complete. Please wait while we install the selected Desktop Environment."
+        sleep 3s
 
         # Installing GNOME
         arch-chroot /mnt pacman -S --needed xorg
