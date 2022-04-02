@@ -41,18 +41,24 @@ hostname_selection () {
 # Selecting the main/root password (Thanks easy-arch!)
 main_password_selection () {
     while true; do
-        read -r -p "Please enter the Root Pasword you'd like for this instance of Arch Linux: " mainpass
-	    while [ -z "$mainpass" ]; do
-            echo
-            echo "You need to enter a Root password."
-            read -r -p "Please enter a Root Password: " mainpass
-            [ -n "$mainpass" ] && break
-	    done
-        echo
-        read -r -p "Please enter the Root Password again: " mainpass2
-        echo
-        [ "$mainpass" = "$mainpass2" ] && echo $mainpass && break
-        echo "The passwords do not match! Please try again!"
+        read -r -p "Please enter the Root Password you'd like for this Instance of Arch Linux: " user
+        if [ -z "$user" ]; then
+            echo "Error! Did not receive a Password! Please enter a Password!"
+            main_password_selection
+        fi
+
+        read -r -p "Please re-enter the Root Password you'd like for this Instance of Arch Linux: " usera
+        if [ -z "$usera" ]; then
+            echo "Error! Did not receive a Password! Please enter a Password!"
+            main_password_selection
+        fi
+
+        if [ "$user" = "$usera" ]; then
+            echo $usera && break
+        fi
+
+        echo "Error! The passwords do not match!"
+        main_password_selection
     done
 }
 
@@ -80,18 +86,24 @@ username_selection () {
 # Selecting the user password (Thanks easy-arch!)
 user_password_selection () {
     while true; do
-        read -r -p "Please enter the User Pasword you'd like for your User: " userpass
-	    while [ -z "$userpass" ]; do
-            echo
-            echo "You need to enter a User password."
-            read -r -p "Please enter a User Password: " userpass
-            [ -n "$userpass" ] && break
-	    done
-        echo
-        read -r -p "Please enter the User Password again: " userpass2
-        echo
-        [ "$userpass" = "$userpass2" ] && echo $userpass && break
-        echo "The passwords do not match! Please try again!"
+        read -r -p "Please enter the Password you'd like for your User: " user
+        if [ -z "$user" ]; then
+            echo "Error! Did not receive a Password! Please enter a Password!"
+            user_password_selection
+        fi
+
+        read -r -p "Please re-enter the Password you'd like for your User: " usera
+        if [ -z "$usera" ]; then
+            echo "Error! Did not receive a Password! Please enter a Password!"
+            user_password_selection
+        fi
+
+        if [ "$user" = "$usera" ]; then
+            echo $usera && break
+        fi
+
+        echo "Error! The passwords do not match!"
+        user_password_selection
     done
 }
 
@@ -262,16 +274,14 @@ main () {
     arch-chroot /mnt echo "$hostname" > /mnt/etc/hostname
 
     # Setting the Root Password to the Root Password that the User selected
-    echo -en "$rootpass\n$rootpass" | arch-chroot /mnt passwd "root"
-    #echo "root:$rootpass" | arch-chroot /mnt chpasswd
+    echo "root:$rootpass" | arch-chroot /mnt chpasswd
 
     # Creating a User with the Username that the User selected
     echo "Creating the User..."
     arch-chroot /mnt useradd -m -G wheel -s /bin/bash ${username}
 
     # Setting the password of the User
-    echo -en "$userpass\n$userpass" | arch-chroot /mnt passwd "$username"
-    #echo "$username:$userpass" | arch-chroot /mnt chpasswd
+    echo "$username:$userpass" | arch-chroot /mnt chpasswd
 
     # Adding the User Group 'wheel' to the sudoers list
     echo "Adding the User Group 'wheel' to the sudoers list..."
