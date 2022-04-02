@@ -31,7 +31,7 @@ locale_selection () {
 hostname_selection () {
     read -r -p "Please enter the Hostname you'd like for this Instance of Arch Linux: " name
     if [ -z "$name" ]; then
-        print "Error! Did not receive a Hostname! Please enter a Hostname for this instance of Arch linux!"
+        echo "Error! Did not receive a Hostname! Please enter a Hostname for this instance of Arch linux!"
         hostname_selection
     fi
     echo $name
@@ -70,7 +70,7 @@ dekstop_environment_selection () {
 username_selection () {
     read -r -p "Please enter the Username you'd like: " user
     if [ -z "$user" ]; then
-        print "Error! Did not receive a Username! Please enter a Username to create a user!"
+        echo "Error! Did not receive a Username! Please enter a Username to create a user!"
         username_selection
     fi
 
