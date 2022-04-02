@@ -264,7 +264,8 @@ main () {
     # Setting the Root Password to the Root Password that the User selected
     echo "Setting the Root Password..."
     echo $rootpass
-    echo "root:$rootpass" | arch-chroot /mnt chpasswd
+    arch-chroot /mnt chpasswd "root:${rootpass}"
+    #echo "root:$rootpass" | arch-chroot /mnt chpasswd
 
     # Creating a User with the Username that the User selected
     echo "Creating the User..."
@@ -273,7 +274,8 @@ main () {
     # Setting the password of the User
     echo "Setting the User Password..."
     echo $userpass
-    echo "$username:$userpass" | arch-chroot /mnt chpasswd
+    arch-chroot /mnt chpasswd "${username}:${userpass}"
+    #echo "$username:$userpass" | arch-chroot /mnt chpasswd
 
     # Adding the User Group 'wheel' to the sudoers list
     echo "Adding the User Group 'wheel' to the sudoers list..."
