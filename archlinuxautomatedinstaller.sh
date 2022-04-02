@@ -291,6 +291,8 @@ main () {
     # Checking what Desktop Environment they selected and Installing it (If none, notify the user of a successful installation.)
     if [ $desktopenvironment = "none" ]; then
         # Notifying the User that the Installation is Complete
+        umount -a
+
         echo "Installation Complete! - Thank you for using Arch Linux Automated Installer!"
         echo "Please eject the Installation Media, then restart your Instance of Arch Linux."
 
@@ -300,13 +302,15 @@ main () {
     
     if [ $desktopenvironment = "kde" ]; then
         # Notifying the User that the Base Installation is complete
-        #echo "The Base Installation is complete. Please wait while we install the selected Desktop Environment."
+        echo "The Base Installation is complete. Please wait while we install the selected Desktop Environment."
 
         # Installing KDE
         arch-chroot /mnt pacman -S plasma sddm konsole kate dolphin firefox
         arch-chroot /mnt systemctl enable sddm
 
         # Notifying the User that the Installation is Complete
+        umount -a
+
         echo "Installation Complete! - Thank you for using Arch Linux Automated Installer!"
         echo "Please eject the Installation Media, then restart your Instance of Arch Linux."
 
@@ -314,9 +318,25 @@ main () {
         exit
     fi
 
-    #if [ $desktopenvironment = "gnome" ]; then
-        #echo "Work in progress"
-    #fi
+    if [ $desktopenvironment = "gnome" ]; then
+        # Notifying the User that the Base Installation is complete
+        echo "The Base Installation is complete. Please wait while we install the selected Desktop Environment."
+
+        # Installing GNOME
+        arch-chroot /mnt pacman -S --needed xorg
+        arch-chroot /mnt pacman -S --needed gnome gnome-tweaks nautilus-sendto gnome-nettool gnome-usage gnome multi-writer adwaita-icon-theme chrome-gnome-shell xdg-user-dirs-gtk fwupd arc-gtk-theme seahosrse gdm
+        arch-chroot /mnt pacman -S --needed firefox vlc filezilla leafpad xscreensaver archlinux-wallpaper
+        arch-chroot /mnt systemctl enable gdm
+
+        # Notifying the User that the Installation is Complete
+        umount -a
+
+        echo "Installation Complete! - Thank you for using Arch Linux Automated Installer!"
+        echo "Please eject the Installation Media, then restart your Instance of Arch Linux."
+
+        # Exiting
+        exit
+    fi
 
 }
 
