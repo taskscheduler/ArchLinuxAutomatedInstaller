@@ -265,7 +265,7 @@ main () {
     echo "Setting the Root Password..."
     touch .passwd
     echo -e "$rootpass\n${rootpass}" > .passwd
-    arch-chroot /mnt /bin/bash -c "${1}" "passwd root" < .passwd >/dev/null
+    echo "root:" < .passwd | arch-chroot /mnt chpasswd
     rm .passwd
 
     # Creating a User with the Username that the User selected
@@ -276,7 +276,7 @@ main () {
     echo "Setting the User Password..."
     touch .passwd
     echo -e "$userpass\n${userpass}" > .passwd
-    arch-chroot /mnt /bin/bash -c "${1}" "passwd ${username}" < .passwd >/dev/null
+    echo "$username:" < .passwd | arch-chroot /mnt chpasswd
     rm .passwd
 
     # Adding the User Group 'wheel' to the sudoers list
