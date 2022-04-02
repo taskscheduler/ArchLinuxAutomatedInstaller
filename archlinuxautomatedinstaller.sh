@@ -288,25 +288,35 @@ main () {
     arch-chroot /mnt grub-install ${diskToInstallTo}
     arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
 
-    # Notifying the User that the Base Installation is complete
-    #echo "The Base Installation is complete. Please wait while we install the selected Desktop Environment."
+    # Checking what Desktop Environment they selected and Installing it (If none, notify the user of a successful installation.)
+    if [ $desktopenvironment = "none" ]; then
+        # Notifying the User that the Installation is Complete
+        echo "Installation Complete! - Thank you for using Arch Linux Automated Installer!"
+        echo "Please eject the Installation Media, then restart your Instance of Arch Linux."
 
-    # Switching into the User Account
-    #su ${username}
+        # Exiting
+        exit
+    fi
+    
+    if [ $desktopenvironment = "kde" ]; then
+        # Notifying the User that the Base Installation is complete
+        #echo "The Base Installation is complete. Please wait while we install the selected Desktop Environment."
 
-    # Checking what Desktop Environment they selected and Installing it
-    #if [ $desktopenvironment = "kde" ]; then
-        #sudo pacman -S plasma sddm konsole kate dolphin firefox
-        #sudo systemctl enable sddm
-    #fi
+        # Installing KDE
+        arch-chroot /mnt pacman -S plasma sddm konsole kate dolphin firefox
+        arch-chroot /mnt systemctl enable sddm
+
+        # Notifying the User that the Installation is Complete
+        echo "Installation Complete! - Thank you for using Arch Linux Automated Installer!"
+        echo "Please eject the Installation Media, then restart your Instance of Arch Linux."
+
+        # Exiting
+        exit
+    fi
 
     #if [ $desktopenvironment = "gnome" ]; then
         #echo "Work in progress"
     #fi
-
-    # Notifying the User that the Installation is Complete
-    echo "Installation Complete! - Thank you for using Arch Linux Automated Installer!"
-    echo "Please eject the Installation Media, then restart your Instance of Arch Linux."
 
 }
 
