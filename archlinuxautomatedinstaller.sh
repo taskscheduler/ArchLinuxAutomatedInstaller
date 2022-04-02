@@ -262,14 +262,16 @@ main () {
     arch-chroot /mnt echo "$hostname" > /mnt/etc/hostname
 
     # Setting the Root Password to the Root Password that the User selected
-    echo "root:$rootpass" | arch-chroot /mnt chpasswd
+    echo -en "$rootpass\n$rootpass" | arch-chroot /mnt passwd "root"
+    #echo "root:$rootpass" | arch-chroot /mnt chpasswd
 
     # Creating a User with the Username that the User selected
     echo "Creating the User..."
     arch-chroot /mnt useradd -m -G wheel -s /bin/bash ${username}
 
     # Setting the password of the User
-    echo "$username:$userpass" | arch-chroot /mnt chpasswd
+    echo -en "$userpass\n$userpass" | arch-chroot /mnt passwd "$username"
+    #echo "$username:$userpass" | arch-chroot /mnt chpasswd
 
     # Adding the User Group 'wheel' to the sudoers list
     echo "Adding the User Group 'wheel' to the sudoers list..."
