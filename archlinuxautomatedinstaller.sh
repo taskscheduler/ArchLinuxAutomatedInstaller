@@ -306,7 +306,7 @@ main () {
         sleep 3s
 
         # Installing KDE
-        arch-chroot /mnt pacman -S plasma sddm konsole kate dolphin firefox
+        arch-chroot /mnt pacman -S --noconfirm plasma sddm konsole kate dolphin firefox
         arch-chroot /mnt systemctl enable sddm
 
         # Notifying the User that the Installation is Complete
@@ -325,9 +325,9 @@ main () {
         sleep 3s
 
         # Installing GNOME
-        arch-chroot /mnt pacman -S --needed xorg
-        arch-chroot /mnt pacman -S --needed gnome gnome-tweaks nautilus-sendto gnome-nettool gnome-usage gnome multi-writer adwaita-icon-theme chrome-gnome-shell xdg-user-dirs-gtk fwupd arc-gtk-theme seahosrse gdm
-        arch-chroot /mnt pacman -S --needed firefox vlc filezilla leafpad xscreensaver archlinux-wallpaper
+        arch-chroot /mnt pacman -S --noconfirm --needed xorg
+        arch-chroot /mnt pacman -S --noconfirm --needed gnome gnome-tweaks nautilus-sendto gnome-nettool gnome-usage gnome multi-writer adwaita-icon-theme chrome-gnome-shell xdg-user-dirs-gtk fwupd arc-gtk-theme seahosrse gdm
+        arch-chroot /mnt pacman -S --noconfirm --needed firefox vlc filezilla leafpad xscreensaver archlinux-wallpaper
         arch-chroot /mnt systemctl enable gdm
 
         # Notifying the User that the Installation is Complete
