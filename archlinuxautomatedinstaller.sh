@@ -264,8 +264,7 @@ main () {
     # Setting the Root Password to the Root Password that the User selected
     echo "Setting the Root Password..."
     touch .passwd
-    echo -e "$rootpass" > .passwd
-    tr --delete '\n' < .passwd > .passwd
+    echo "$rootpass" > .passwd
     cat .passwd
     echo "root:" < .passwd | arch-chroot /mnt chpasswd
     rm .passwd
@@ -277,8 +276,7 @@ main () {
     # Setting the password of the User
     echo "Setting the User Password..."
     touch .passwd
-    echo -e "$userpass" > .passwd
-    tr --delete '\n' < .passwd > .passwd
+    echo "$userpass" > .passwd
     cat .passwd
     echo "$username:" < .passwd | arch-chroot /mnt chpasswd
     rm .passwd
