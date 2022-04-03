@@ -2,7 +2,6 @@
   ![Github licence](https://img.shields.io/badge/license-GPLv3-green?style=flat-square)
   ![Platform](https://img.shields.io/badge/platform-GNU%2FLinux-green?style=flat-square)
   
-  Description<br/> 
   Arch Linux Automated Installer is the project that aims to make installing Arch Linux easy while still being highly customizable.
 
   Table of Contents
