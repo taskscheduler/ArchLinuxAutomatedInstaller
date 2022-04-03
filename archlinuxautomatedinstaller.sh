@@ -333,7 +333,7 @@ main () {
         sleep 3s
 
         # Installing GNOME
-        arch-chroot /mnt pacman -S --noconfirm xorg gnome extra gdm
+        arch-chroot /mnt pacman -S --noconfirm xorg gnome gnome-extra gdm
         arch-chroot /mnt systemctl enable gdm
 
         # Notifying the User that the Installation is Complete
