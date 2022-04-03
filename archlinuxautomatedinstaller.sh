@@ -124,6 +124,15 @@ timezone_selection () {
     done
 }
 
+# Selecting a Kernel
+kernel_selection () {
+    PS3="Please select a Kernel: "
+    optkern=("linux" "linux-hardened" "linux-lts" "linux-zen")
+    select fav in "${optkern[@]}"; do
+        echo $customtimezone && break
+    done
+}
+
 # Main Function
 main () {
     # Welcomes the User
@@ -172,6 +181,10 @@ main () {
 
     # User Password Selection
     local userpass=$(user_password_selection)
+
+    # Kernel Selection
+    local selectedKern=$(kernel_selection)
+    echo "Using Kernel: " $selectedKern
 
     # Confirming Installation with the User
     read -r -p "Would you like to continue with the Installation? " response
@@ -240,7 +253,8 @@ main () {
     # Installing the Base System
     echo "Installing the Base System..."
 
-    pacstrap /mnt base linux linux-firmware sof-firmware base-devel grub efibootmgr nano networkmanager
+    #pacstrap /mnt base linux linux-firmware sof-firmware base-devel grub efibootmgr nano networkmanager
+    pacstrap /mnt base $selectedKern linux-firmware sof-firmware base-devel grub efibootmgr nano networkmanager
 
     # Generating the fstab
     echo "Generating the File System Tab..."
