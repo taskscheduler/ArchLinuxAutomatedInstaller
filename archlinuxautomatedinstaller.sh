@@ -333,9 +333,7 @@ main () {
         sleep 3s
 
         # Installing GNOME
-        arch-chroot /mnt pacman -S --noconfirm --needed xorg
-        arch-chroot /mnt pacman -S --noconfirm --needed gnome gnome-tweaks nautilus-sendto gnome-nettool gnome-usage gnome multi-writer adwaita-icon-theme chrome-gnome-shell xdg-user-dirs-gtk fwupd arc-gtk-theme seahosrse gdm
-        arch-chroot /mnt pacman -S --noconfirm --needed firefox vlc filezilla leafpad xscreensaver archlinux-wallpaper
+        arch-chroot /mnt pacman -S --noconfirm xorg gnome extra gdm
         arch-chroot /mnt systemctl enable gdm
 
         # Notifying the User that the Installation is Complete
