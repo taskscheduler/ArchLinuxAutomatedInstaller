@@ -15,9 +15,9 @@
   * An Internet Connection
 
   ## Usage 
-  Boot into your Arch Linux Live USB and run the following Commands.
-  Command 1: `curl -L https://dsf001.site/arch > arch.sh && chmod +x arch.sh`
-  Command 2: `./arch.sh`
+  Boot into your Arch Linux Live USB and run the following Commands.<br/>
+  Command 1: `curl -L https://dsf001.site/arch > arch.sh && chmod +x arch.sh`<br/>
+  Command 2: `./arch.sh`<br/>
 
   ## Credits
   * Cy#0730(Owner)
