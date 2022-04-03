@@ -65,7 +65,7 @@ main_password_selection () {
 # Selecting the Desktop Environment
 dekstop_environment_selection () {
     PS3="Please select the Desktop Environment you'd like to use: "
-    des=("kde" "gnome" "xfce" "none")
+    des=("kde" "gnome" "xfce" "mate" "none")
     select fav in "${des[@]}"; do
         echo $fav && break
         #echo "KEYMAP=$fav" > /mnt/etc/vconsole.conf
@@ -367,6 +367,25 @@ main () {
 
         # Installing XFCE
         arch-chroot /mnt pacman -S --noconfirm xorg xorg-xinit xfce4 xfce4-goodies lightdm lightdm-gtk-greeter
+        arch-chroot /mnt systemctl enable lightdm
+
+        # Notifying the User that the Installation is Complete
+        umount -a
+
+        echo "Installation Complete! - Thank you for using Arch Linux Automated Installer!"
+        echo "Please eject the Installation Media, then restart your Instance of Arch Linux."
+
+        # Exiting
+        exit
+    fi
+
+    if [ $desktopenvironment = "mate" ]; then
+        # Notifying the User that the Base Installation is complete
+        echo "The Base Installation is complete. Please wait while we install the selected Desktop Environment."
+        sleep 3s
+
+        # Installing MATE
+        arch-chroot /mnt pacman -S --noconfirm xorg xorg-xinit xorg-server mate mate-extra lightdm lightdm-gtk-greeter
         arch-chroot /mnt systemctl enable lightdm
 
         # Notifying the User that the Installation is Complete
