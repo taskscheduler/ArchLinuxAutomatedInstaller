@@ -146,7 +146,7 @@ main () {
     # Disk Selection
     #local diskToInstallTo=$(disk_selection)
     PS3="Please select what disk you'd like Arch Linux install to: "
-    select diskToInstallTo in $(lsblk -dpnoNAME|grep -P "/dev/sd|nvme|vd");
+    select diskToInstallTo in $(lsblk -dpnoNAME|grep -P "/dev/sd|nvme|vd|blk");
     do
         break
     done
