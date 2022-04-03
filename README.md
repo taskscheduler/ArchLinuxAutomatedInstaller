@@ -20,6 +20,6 @@
   Command 2: `./arch.sh`<br/>
 
   ## Credits
-  * Cy#0730(Owner)
+  * Cy#0730 (Owner)
   * dsf001#1337 (Helped)
   
