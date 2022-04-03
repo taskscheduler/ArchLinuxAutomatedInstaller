@@ -65,7 +65,7 @@ main_password_selection () {
 # Selecting the Desktop Environment
 dekstop_environment_selection () {
     PS3="Please select the Desktop Environment you'd like to use: "
-    des=("kde" "gnome" "none")
+    des=("kde" "gnome" "xfce" "none")
     select fav in "${des[@]}"; do
         echo $fav && break
         #echo "KEYMAP=$fav" > /mnt/etc/vconsole.conf
@@ -349,6 +349,25 @@ main () {
         # Installing GNOME
         arch-chroot /mnt pacman -S --noconfirm xorg gnome gnome-extra gdm
         arch-chroot /mnt systemctl enable gdm
+
+        # Notifying the User that the Installation is Complete
+        umount -a
+
+        echo "Installation Complete! - Thank you for using Arch Linux Automated Installer!"
+        echo "Please eject the Installation Media, then restart your Instance of Arch Linux."
+
+        # Exiting
+        exit
+    fi
+
+    if [ $desktopenvironment = "xfce" ]; then
+        # Notifying the User that the Base Installation is complete
+        echo "The Base Installation is complete. Please wait while we install the selected Desktop Environment."
+        sleep 3s
+
+        # Installing XFCE
+        arch-chroot /mnt pacman -S --noconfirm --needed xfce4 mousepad parole ristretto thunar-archive-plugin thunar-media-tags-plugin xfce4-battery-plugin xfce4-datetime-plugin xfce4-mount-plugin xfce4-netload-plugin xfce4-notifyd xfce4-pulseaudio-plugin xfce4-screensaver xfce4-taskmanager xfce4-wavelan-plugin xfce4-weather-plugin xfce4-whiskermenu-plugin xfce4-xkb-plugin file-roller network-manager-applet leafpad epdfview galculator lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings capitaine-cursors arc-gtk-theme xdg-user-dirs-gtk
+        arch-chroot /mnt systemctl enable lightdm
 
         # Notifying the User that the Installation is Complete
         umount -a
