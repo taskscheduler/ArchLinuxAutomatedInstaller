@@ -366,7 +366,7 @@ main () {
         sleep 3s
 
         # Installing XFCE
-        arch-chroot /mnt pacman -S --noconfirm xfce4 xfce4-goodies lightdm lightdm-gtk-greeter
+        arch-chroot /mnt pacman -S --noconfirm xorg xorg-xinit xfce4 xfce4-goodies lightdm lightdm-gtk-greeter
         arch-chroot /mnt systemctl enable lightdm
 
         # Notifying the User that the Installation is Complete
