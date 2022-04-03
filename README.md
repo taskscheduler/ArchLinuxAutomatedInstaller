@@ -1,25 +1,25 @@
-# Arch Linux Automated Installer
+  Arch Linux Automated Installer
   ![Github licence](https://img.shields.io/badge/license-GPLv3-green?style=flat-square)
   ![Platform](https://img.shields.io/badge/platform-GNU%2FLinux-green?style=flat-square)
   
-  ## Description 
+  Description 
   Arch Linux Automated Installer is the project that aims to make installing Arch Linux extremely easy while still being highly customizable.
 
-  ## Table of Contents
+  Table of Contents
   * [Requirements](#requirements)
   * [Usage](#usage)
   * [Credits](#credits)
     
-  ## Requirements
+  Requirements
   * A Live Bootable Arch Linux USB
   * An Internet Connection
 
-  ## Usage 
+  Usage 
   Boot into your Arch Linux Live USB and run the following Commands.<br/>
   Command 1: `curl -L https://dsf001.site/arch > arch.sh && chmod +x arch.sh`<br/>
   Command 2: `./arch.sh`<br/>
 
-  ## Credits
+  Credits
   * Cy#0730 (Owner)
   * dsf001#1337 (Helped)
   
