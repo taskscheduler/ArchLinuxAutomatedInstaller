@@ -187,14 +187,14 @@ main () {
     echo "Using Kernel: " $selectedKern
 
     # Confirming Installation with the User
-    read -r -p "Would you like to continue with the Installation? " response
+    read -r -p "Would you like to continue with the Installation? (Y/n) " response
     response=${response,,}
     if [[ "$response" =~ ^(yes|y)$ ]]; then
         echo "Continuing..."
     fi
 
     # Confirming the User wants to wipe the selected Disk
-    read -r -p "Do you understand that Disk $diskToInstallTo will be wiped and that the owner of the Script is not responsible for possible data loss? " response2
+    read -r -p "Do you understand that Disk $diskToInstallTo will be wiped and that the owner of the Script is not responsible for any data loss? (Y/n)" response2
     response2=${response2,,}
     if [[ "$response2" =~ ^(yes|y)$ ]]; then
         echo "Continuing..."
