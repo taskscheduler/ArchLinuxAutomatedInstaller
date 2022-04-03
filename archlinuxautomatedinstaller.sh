@@ -129,7 +129,7 @@ kernel_selection () {
     PS3="Please select a Kernel: "
     optkern=("linux" "linux-hardened" "linux-lts" "linux-zen")
     select fav in "${optkern[@]}"; do
-        echo $customtimezone && break
+        echo $fav && break
     done
 }
 
