@@ -251,6 +251,11 @@ main () {
 
     swapon ${diskToInstallTo}2
 
+    # Setting up Mirrors
+    echo "Setting up Mirrors..."
+
+    reflector --p https --sort rate --latest 10 --save /etc/pacman.d/mirrorlist
+
     # Installing the Base System
     echo "Installing the Base System..."
 
