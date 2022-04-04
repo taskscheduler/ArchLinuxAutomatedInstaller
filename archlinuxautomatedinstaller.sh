@@ -110,7 +110,7 @@ user_password_selection () {
 # Selecting a Timezone
 timezone_selection () {
     PS3="Please select a Timezone: "
-    timezones=("GB" "GMT" "Custom")
+    timezones=("Automatic" "GB" "GMT" "Custom")
     select fav in "${timezones[@]}"; do
         [ "$fav" != "Custom" ] && echo $fav && break
         read -r -p "Please enter a Custom Timezone " customtimezone
@@ -266,7 +266,14 @@ main () {
 
     # Setting the Timezone to the Timezone that the User selected
     echo "Setting Timezone..."
-    arch-chroot /mnt ln -sf /usr/share/zoneinfo/${timezone} /etc/localtime
+    if [ $timezone = "Automatic" ]; then
+        curl https://ipapi.co/timezone | arch-chroot /mnt ln -sf /usr/share/zoneinfo/${timezone} /etc/localtime
+    fi
+
+    if [ $timezone != "Automatic" ]; then
+        arch-chroot /mnt ln -sf /usr/share/zoneinfo/${timezone} /etc/localtime
+    fi
+    #arch-chroot /mnt ln -sf /usr/share/zoneinfo/${timezone} /etc/localtime
 
     # Syncing the System Clock
     arch-chroot /mnt hwclock --systohc
