@@ -268,8 +268,7 @@ main () {
     # Setting the Timezone to the Timezone that the User selected
     echo "Setting Timezone..."
     if [ $timezone = "Automatic" ]; then
-        local autoTimezone=curl https://ipapi.co/timezone
-        arch-chroot /mnt ln -sf /usr/share/zoneinfo/${autoTimezone} /etc/localtime
+        arch-chroot /mnt ln -sf /usr/share/zoneinfo/$(curl https://ipapi.co/timezone) /etc/localtime
     fi
 
     if [ $timezone != "Automatic" ]; then
